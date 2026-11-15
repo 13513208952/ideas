@@ -1,6 +1,8 @@
-# Avicii — Do It For Love: reconstruction research handoff
+# Avicii — Do It For Love: reconstruction research log
 
-Created 2026-11-15. Status: livestream video upload pending. This is a continuity record, not a verified production history.
+> **当前状态（2026-11-15）：直播原片已恢复；v1/v2 32.5 秒伴奏及分轨/MIDI 已完成并备份 Google Drive；v2 经用户试听发现显著音色与音符重叠问题；v3 干声版本尚未完成；外部音乐听觉模型尚未实际接通。**
+>
+> **后续 Agent 请首先阅读：[HANDOFF_CURRENT.md](./HANDOFF_CURRENT.md)** — 中文完整交接，包括实际下载链接、SHA-256、主观评价、失败原因、源码和下一步任务。下文为按时间保留的原始研究日志，部分早期“待上传/待恢复”状态已过时，请以交接文件为准。
 
 ## Scope and objective
 
