@@ -64,3 +64,59 @@ Possible acoustic guitar or multisampled guitar plus effects; alternatively PCM 
 Is A an authentic unmixed/original late demo or another edit? Is the 33:50 section actually the same opening? Is Bilibili's initial mono caused by resampling/repost? Is original guitar acoustic, PCM/sampler, synthesizer or layered? Which specific processing makes the tail widen? Can the livestream clarify the exact notes and arrangement?
 
 **Carry-forward instruction:** Continue from A/B/C evidence and targeted first-hour clips. Do not revert to the failed generic EDM synthesis plan.
+
+---
+
+## 2026-11-15: livestream successfully recovered from Google Drive 7z volumes — VERIFIED
+
+**Source:** User-uploaded Google Drive folder: https://drive.google.com/drive/folders/1OWpWY3YMzKYK4cObIOYllaODDuSRZPD5 . Eight complete split 7z volumes youtube_videos.7z.001–.008 were individually fetched through the Drive connector (each below 256 MiB), reassembled and extracted with libarchive. Original 1.79GB ZIP was independently visible at https://drive.google.com/file/d/16_KfHkY8SKJjyIp21Jv3p-ewiq7DK_0X/view but could not be fetched whole due the connector's 256 MiB per-file limit. **No need to ask user to retransmit the video.**
+
+**Actual extracted MKV:**
+- File name: Avicii Live @ Monument Valley #thecrowningofprinceliam [AH7-hGaH_hk].mkv
+- Exact size: **1,789,512,298 bytes**; duration **9677.728 s**.
+- Video: H.264 1280x720 30 fps. Audio: Opus 48 kHz / 2 encoded channels.
+- SHA-256: `e380b1c2862970509502db9ae33e9a2f79bdc1b85dd58973716e58428efb7c9d`
+- Extracted to local model-analysis container in current turn; future sessions should access the Drive volumes if its local path is no longer present.
+
+**Extracted analysis assets in current conversation:**
+- `avicii_livestream_analysis/first_hour_audio.opus` (audio first hour, original Opus stream copied, ~45 MB).
+- `avicii_livestream_analysis/30m28_to_31m19.wav` (51s lossless-decoded PCM for analysis).
+- `avicii_livestream_analysis/33m50_to_34m18.wav` (28s lossless-decoded PCM for analysis).
+- `avicii_livestream_analysis/do_it_for_love_30m.mkv` (context video 30:15–31:35, stream-copied).
+- `avicii_livestream_analysis/possible_intro_34m.mkv` (context video ~33:20–34:20, stream-copied).
+- `avicii_livestream_analysis/three_source_chromagrams.png`, `livestream_to_demo_alignment.png` (CODE-PLOTTED).
+- `avicii_livestream_analysis/robust_alignment.py`, `alignment_with_controls.json` (reproducible computations; in conversation runtime, not automatically GitHub).
+
+**Video check:** outdoor, distant camera view with equipment, keyboards, computer and speakers. Cannot reliably read DAW/plugin settings. The livestream soundtrack is a **mix of acoustic pickup of stage playback/voices/ambience**, not an unprocessed dry guitar stem.
+
+### Crucial mono measurement on the original livestream
+
+Although the video audio is coded as two channels, the channels carry nearly the same signal:
+
+| Absolute livestream range | L/R Pearson correlation | Side/Mid power, dB |
+| --- | ---: | ---: |
+| 30:28–31:19 | 0.9999999432 | −75.47 dB |
+| 33:50–34:18 | 0.9999998437 | −71.07 dB |
+
+**Consequence:** The official livestream **does not preserve meaningful original stereo information** in these sections. Never infer Avicii's real DAW stereo reverb/width from these clips. This is separate from Bilibili remake's initially dual-mono opening and does not resolve where B's stereo may have been lost.
+
+### Direct THREE-WAY comparison (pitch-class chroma, exploratory)
+
+Methods: 22,050Hz mono; STFT 4096 and 1024 hop; 12-bin chroma_stft; smooth over 5 frames; L2 normalization; subsequence DTW using cosine distance with steps (1,1),(1,2),(2,1). **Cost is mean along best DTW path; LOWER is closer and it is NOT a percentage or a proof of identical performance.** Algorithm can over-fit recurring chord loops and cannot independently establish sample identity.
+
+| Livestream clip | Reference | Best matching region in reference | Average DTW framewise cost |
+| --- | --- | --- | ---: |
+| 30:28–31:19 (51 sec) | A: target 3:36 demo | **21.13–67.62 s** | **0.0767** |
+| 30:28–31:19 | B: Respaldo remake | 59.81–108.72 s | 0.1460 |
+| 33:50–34:18 (28 sec) | A: target 3:36 demo | 180.19–202.43 s | 0.1318 |
+| 33:50–34:18 | B: Respaldo remake | **37.89–65.39 s** | **0.0584** |
+| 33:50–34:18 | A, constrained to first 50s | 31.39–49.74 s | 0.1596 |
+| 33:50–34:18 | B, constrained to first 50s | 10.54–35.16 s | 0.0645 |
+
+**Control:** Shuffling livestream 30:28–31:19 by 2-second chunks (five trials) while maintaining the original pitch-content distribution increases target A DTW cost to 0.167–0.189 vs observed 0.0767. This is meaningful evidence the matched **sequence** is non-random. The same shuffling of 33:50–34:18 yields A cost 0.133–0.150 versus observed 0.132; thus C2→A alone is **NOT distinctive enough to prove specific segment identity**. C2→B looks more promising but needs further controls on B.
+
+Searching for the FIRST 10 seconds of B in the extracted livestream 29:30–35:30 yields a strong 10s chroma match around **30:57.4–31:07.3**, cost **0.0468**. Searching A's FIRST 10 seconds in that interval yields only weaker matches (cost ~0.187), not an equally strong identification. The user's impression that the guitar opening sounds close is retained, but one must not assert A and B have the exact same opening notes.
+
+**Interpretation:** The viewer's 30:28 annotation is well-supported by computational musical-sequence matching. The 33:50 'possible intro' remains **possible**, not independently confirmed as the eventual 0–3s intro; it may be a related motif with a different arrangement. This is a structural/harmonic result, NOT identification of real guitar pickup, patches, recording chain, stems, EQ or effects.
+
+**Next:** (a) fine align pitch / MIDI of initial guitar pluck to livestream instrumental segment(s); (b) check more strictly whether 33:50 material is ever the same opening; (c) compare Bilibili remake to its ORIGINAL YouTube audio to investigate channel damage; (d) revisit timbral source search with real note data, and keep comparing A/B/C. Restrict investigation to FIRST HOUR unless user changes it.
