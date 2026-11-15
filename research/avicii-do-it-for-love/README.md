@@ -223,3 +223,24 @@ The user requested continued independent reconstruction, not further searching f
 **Key limitations:** The second 3.7–6.9 s measurement interval was NOT used for the automated EQ profile estimation, but **WAS consulted** during manual MIDI/velocity refinements; it is **not a fully blind test**. A higher average spectrum correlation is NOT a perceptual similarity percentage or proof of equivalent timbre. Mono musical pitch similarity is imperfect outside the opening, even after improvement. Source reference is an unofficial MP3 of unverified session provenance. EQ and stereo were adjusted toward the target by design, not recovered producer settings. Significant transient fine structure and note-specific harmonics still differ from the target.
 
 **Next step:** A/B audition v2 vs v1 and target; prioritize true individual note/strum separation and sample-source identification rather than more average EQ. For 8–32s, map actual instrument and drum entry from full target/livestream; avoid arbitrary percussion. Improve stronger testing on fresh nonfit sections and record any user subjective observations.
+
+
+---
+
+## 2026-11-15 — user listening feedback and audio-language-model plan (important for v3)
+
+**USER'S DIRECT FEEDBACK after auditioning v2:** The target intro is **dry, crisp, bright, energetic / clear**; independently synthesized v2 sounds excessively **soft / wistful / 'artsy'** and **multiple independently audible notes in the original are smeared into a blended chord**. This is a major qualitative falsification of relying on mean-log-Mel similarity as the objective. Tone-source mismatch is involved, **not merely long reverb**.
+
+**Identified v2 arrangement bug:** MIDI collapsed several sequentially plucked notes into ~50 ms chord clusters and inserted another high chord cluster roughly ~275 ms later; each independently reverb-treated stereo layer then overlapped with pads. Approx target transient peaks ~1.30, 1.40, 1.58 sec and repeated near ~2.49, 2.59, 2.78 s. The note stream should represent **per-string or per-pluck sequential note-on + note-off**, or distinct instrument layers if analysis warrants. Do not assert every transient is a distinct guitar pluck without isolating the timbre.
+
+**Proposed v3:** Remove speculative pad and excess diffuse tail; make dry guitar body/individual notes individually editable, shorter overlaps and correct attack times; compare real guitar sample materials (pick hardness, fret/string mechanical noise, spectral inharmonicity) and use short early-reflection tail only if indicated by target. Retain original stereo expansion as a SEPARATE later problem. Tune instrument before optimizing broad EQ again.
+
+**Audio-language-model investigation:**
+- NVIDIA **Music Flamingo** dedicated music-understanding 8B model: https://huggingface.co/nvidia/music-flamingo-2601-hf , official hosted demo https://huggingface.co/spaces/nvidia/music-flamingo ; model is ~8B, official tested on A100 80GB, so a stock 8GB RTX4060 Laptop is **not assured** to run it. It can make qualitative timbre/instrument/arrangement observations but not output ground-truth exact MIDI or production chain; music A-LMs can hallucinate. HF demo may have capacity/queue constraints.
+- Google **Gemini API audio understanding**, general audio/questioning; audio path may downmix and downsample, not suited to precise stereo/transient analysis: https://ai.google.dev/gemini-api/docs/audio .
+- Qwen2.5-Omni-3B supports audio but local stock FP16 setup may exceed 8GB; quantization and CPU-offload are experimental, not guaranteed; and it is less music-specialized than Music Flamingo.
+- For faithful rebuilding, combine language model audio perception with **onset/pitch source-level computation** and user listening; CLAP/audio embeddings alone may ignore note order and timbral fine detail.
+
+**New model-ready AB asset uploaded to user's own Drive:**
+https://drive.google.com/file/d/1bXGyezYEWADpe5zs0IcKKep46irm5MUc/view 
+Title: `Avicii_Original_vs_v2_intro_8s_AB.flac` (2.28 MB, 17s stereo FLAC, 44.1 kHz). Content: **0–8 seconds target original**, 8–9 seconds silence, **9–17 seconds independent v2**. RMS-matched by reducing v2 gain by ~3.38 dB, without dynamic compression; 20 ms boundary fades to avoid switching artifacts. Good for asking music-understanding models to compare *note separation, attack brightness, short decay, reverb softness, mechanical string timbre* and output a prioritized error diagnosis; not for stereo analysis if the model folds to mono. Upload this to official Music Flamingo demo via its UI; no demo invocation has been performed in current ChatGPT runtime.
