@@ -120,3 +120,53 @@ Searching for the FIRST 10 seconds of B in the extracted livestream 29:30–35:3
 **Interpretation:** The viewer's 30:28 annotation is well-supported by computational musical-sequence matching. The 33:50 'possible intro' remains **possible**, not independently confirmed as the eventual 0–3s intro; it may be a related motif with a different arrangement. This is a structural/harmonic result, NOT identification of real guitar pickup, patches, recording chain, stems, EQ or effects.
 
 **Next:** (a) fine align pitch / MIDI of initial guitar pluck to livestream instrumental segment(s); (b) check more strictly whether 33:50 material is ever the same opening; (c) compare Bilibili remake to its ORIGINAL YouTube audio to investigate channel damage; (d) revisit timbral source search with real note data, and keep comparing A/B/C. Restrict investigation to FIRST HOUR unless user changes it.
+
+
+---
+
+## 2026-11-15: user-discovered NEW livestream occurrence at 12:25–12:30
+
+**IMPORTANT:** The previous search focus on 30:28–31:19 was not exhaustive. User identified **12:25–12:30** as a relatively clean-sounding passage. We inspected the actual full video and decoded audio. The song appears substantially earlier in the FIRST HOUR as well.
+
+### Direct inspection
+- Source: original `AH7-hGaH_hk` MKV at absolute **12:25–12:30**, decoded directly to a 5s 48 kHz 24-bit stereo WAV. Also extracted 12:20–12:40 context.
+- Source frame at 12:27 clearly shows an acoustic guitar **standing unattended** behind the central workstation, plus outdoor keyboards, laptop and speakers. **This does not show the guitar being played**. There is no visually verifiable isolated guitar stem.
+- SRT 12:05–13:12 repeats the verse/chorus lyric passages of **Do It For Love**, despite imperfect ASR wording (e.g. 'where you know my name' instead of 'where you call my name'). Lyrics independently match the song; thus this is an **earlier occurrence of Do It For Love**. 11:00–12:00 includes Swedish chorus/rehearsal discussion and deserves chronological review later.
+- SRT 12:22–12:32 contains a sustained vocal/vowel (ASR just 'All'), so 12:25–12:30 is **not safely describable as dry isolated guitar**. It may have less conversation, but the spectrum still contains multiple simultaneous components.
+- User-identified cleanliness is a valuable listening report, and should be tested against objective source-to-noise / overlapping-component measures, NOT denied on the basis of mere waveform complexity.
+
+### Chroma matching — exploratory
+Same 12-bin chroma_stft + DTW-cosine method as preceding analysis (22,050 Hz, STFT 4096, hop 1024, 5-frame chroma smoothing). Scores are **NOT timbre similarity or proof of identical recordings**.
+
+| Livestream query | Compared with | Best matched section in reference | Mean per-frame DTW cost |
+| --- | --- | --- | ---: |
+| **12:25–12:30** (5s) | Target A 3:36 | **35.20–39.20 s** | **0.0747** |
+| 12:25–12:30 | Respaldo B 3:27 | 51.32–55.59 s | 0.0840 |
+| 12:25–12:30 | Target **FIRST 10 s only** | 6.97–9.94 s | **0.1498** (weaker) |
+| **12:20–12:40** (20s) | Target A 3:36 | **28.98–44.12 s** | 0.1270 |
+| 12:20–12:40 | Respaldo B 3:27 | 46.63–62.69 s | 0.1290 |
+| 12:20–12:40 | **later livestream 30:28–31:19** | **30:38.91–30:54.38** | **0.1363** |
+
+**Interpretation:** The user found another actual replay/working iteration of the same song, not merely an unrelated sound. However, the 12:25 five-second clip corresponds to the **vocal/arrangement part around 35s of A**, not to the **specific target opening 0–3s**. The shorter 5s chroma query can produce coincidental matches in looping harmonies, so its accuracy is supported by the **longer 20s repeated lyrics/context**, and not the five-second DTW score alone.
+
+### Spectral analysis at 12:25–12:30
+
+- RMS signal level ~0.0588 (raw decode scale; not comparable as perceived loudness across mixes).
+- Median spectral centroid ~1.91 kHz.
+- Spectral power fraction above 3kHz ~3.47%.
+- HPSS *percussive spectral power* fraction ~0.285 (algorithmic horizontal/vertical spectral separation, not an actual instrumental drum/guitar stem).
+- For A original intro 0–5s, above-3kHz fraction ~1.58%, HPSS percussive fraction ~0.064. These **different musical arrangements and recording paths** cannot be taken as evidence that one guitar instrument is inherently brighter.
+- A matched section 35.2–39.2s has ~10.18% power above 3kHz, HPSS percussive fraction ~0.327; Respaldo matched 51.3–55.6s has ~3.95% above 3kHz, HPSS percussive ~0.214. Live second pass at 30:41–30:46 has ~3.52% above 3kHz, HPSS percussive ~0.181. These are mix-level quantities, not dry-tone measurements.
+- The sound has frequent vertical transients against continuous harmonic bands. Unlike A 0–3s, the 5s window **does not contain three widely spaced, individually clean chord decays**. Do not treat it as isolated guitar for neural/spectral cloning.
+
+### New local analysis assets (available in current conversation only)
+
+- `avicii_livestream_analysis/12m25/live_12m25-12m30.wav` — exact 5s excerpt.
+- `avicii_livestream_analysis/12m25/live_12m20-12m40.wav` — 20s context.
+- `avicii_livestream_analysis/12m25/frame_12m27.jpg`.
+- `avicii_livestream_analysis/12m25/live_12m25_vs_two_intros.png` — wave/STFT comparison (unaligned music phrases).
+- `avicii_livestream_analysis/12m25/live_12m20_12m40_detail.png` — coded wave, spectrogram and CQT.
+- `avicii_livestream_analysis/12m25/livestream_12min_matches_song.png` — chromagram of 12m, target, remake, 30m passages.
+- Scripts: `analyze_12m25.py`, `compare_music.py`, `live_repeated_section.py`, `plot_musical_alignment.py`; numeric results `12m25_features.json`, `chroma_matches.json`, `cross_livestream_alignment.json`.
+
+**NEXT ACTION:** Extend source timeline to **11:50–13:15** and compare repeated versions of the same sung passage; determine which local intervals are cleanest for reconstructing individual guitar sounds. Keep user's **priority** of reproducing the exact A opening 0–3s distinct: that particular passage remains unlocated in the livestream. Investigate both the 12-minute and 30-minute instances before declaring the original pluck absent. Continue limiting video exploration to the FIRST HOUR.
