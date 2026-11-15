@@ -50,6 +50,7 @@ if ! command -v ffmpeg >/dev/null 2>&1; then
 fi
 
 js_args=()
+js_ready=false
 if command -v deno >/dev/null 2>&1; then
   deno_version="$(deno --version | head -n 1 | awk '{print $2}')"
   deno_major="${deno_version%%.*}"
@@ -57,24 +58,28 @@ if command -v deno >/dev/null 2>&1; then
   deno_minor="${deno_minor%%.*}"
   if [[ "${deno_major:-0}" =~ ^[0-9]+$ && "${deno_minor:-0}" =~ ^[0-9]+$ ]] && \
      (( deno_major > 2 || (deno_major == 2 && deno_minor >= 3) )); then
+    js_ready=true
     echo "JavaScript runtime: Deno $deno_version"
   else
     echo "WARNING: Deno $deno_version is too old (requires >=2.3)." >&2
   fi
-elif command -v node >/dev/null 2>&1; then
+fi
+
+if [[ "$js_ready" != true ]] && command -v node >/dev/null 2>&1; then
   node_version="$(node --version)"
   node_major="${node_version#v}"
   node_major="${node_major%%.*}"
   if [[ "$node_major" =~ ^[0-9]+$ ]] && (( node_major >= 22 )); then
     js_args+=(--js-runtimes node)
+    js_ready=true
     echo "JavaScript runtime: Node $node_version"
   else
     echo "WARNING: Node $node_version is too old (requires >=22)." >&2
   fi
 fi
 
-if (( ${#js_args[@]} == 0 )) && ! command -v deno >/dev/null 2>&1; then
-  echo "WARNING: No supported default JavaScript runtime found." >&2
+if [[ "$js_ready" != true ]]; then
+  echo "WARNING: No supported JavaScript runtime found." >&2
   echo "Install Deno >=2.3, or Node.js >=22, then retry." >&2
   echo "Deno instructions: https://docs.deno.com/runtime/getting_started/installation/" >&2
 fi
