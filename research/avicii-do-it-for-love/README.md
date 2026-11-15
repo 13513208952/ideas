@@ -191,3 +191,35 @@ Same 12-bin chroma_stft + DTW-cosine method as preceding analysis (22,050 Hz, ST
 **Next systematic improvements:** (1) verify exact guitar voicings by sparse multi-pitch transcription of initial three note attacks, using tempered harmonic candidate pursuit + B remake alignment; (2) characterize original early attack vs late 1s decay and fit stereo impulse response from target, avoiding copying full target audio; (3) select/browse recorded vintage guitar soundfont/preset candidates, not only TimGM6mb; (4) reconstruct actual percussion/synth/bass entry times by onset-energy + harmonic/percussive stem separation, not prefill genre beats; (5) compare withheld attacks & 28–32s with saved reference and produce revised stems.
 
 **Handoff warning:** The 32.5s ZIP includes a 7s A/B WAV that incorporates user-supplied target audio *for listening comparison only*. The separately rendered mix/stems **do not** contain copied source audio. Keep source files in personal research rather than public redistribution. Future sessions should retrieve the ZIP from conversation files or request its reattachment if no longer mounted.
+
+
+---
+
+## 2026-11-15 — v2 independent accompaniment rendered (32.5 s; provisional)
+
+The user requested continued independent reconstruction, not further searching for livestream guitar source. The experiment produced `/mnt/data/avicii_independent_rebuild_v2.zip` in the ChatGPT conversation runtime. The ZIP is **not** stored in this public GitHub repository (it includes an A/B containing a portion of user-supplied target recording for private research). The independent mix and stems **do not copy audio samples from the target**.
+
+**Deliverables inside v2 ZIP:** `Avicii_Do_It_For_Love_independent_v2.flac` (44.1kHz stereo, exactly 32.50 s), `Guitar_body_independent.flac`, `Guitar_accent_independent.flac`, `Bass_independent.flac`, `Atmosphere_independent.flac`, `reconstruction_v2_editable.mid`, `build_avicii_reconstruction_v2.py`, `v2_analysis.json`, `target_v1_v2_spectrograms.png`, `AB_v1_v2_target_first.wav` (target then v1 then v2, RMS normalized) and README.
+
+**New evidence about the intro:**
+- Target attack onsets are **not** just a compact 0.14-second strum per chord. There are strong short-delay follow-up attacks ~0.28–0.31 s after the main attack. Examples: 1.30 and 1.59 s; 3.70 and 3.99 s.
+- Spectral pitch clues support the **E3/G3/B3, C3, B2/F#3** grouping, but many visible higher harmonics could be overtones of lower strings instead of independently played high notes. **Exact MIDI is unverified.**
+- v2 uses main and delayed accent guitar MIDI **as two independently editable tracks**, not claiming these are actually both played by acoustic guitar.
+- The first seven chord onset estimates used by the generator: ~0.09, 1.19, 2.39, 3.59, 4.89, 5.98, 7.18 s (harmonic activation starts); a separate onset-energy peak detector gives higher times ~0.21, 1.30, 2.50, 3.70, 5.01, 6.10, 7.30 s. Difference is measurement definition / attack ramp, not an actual beat shift. Note grid after ~8 seconds is still extrapolated.
+- Revised MIDI chord note allocation and velocities via actual **chroma pitch-class fit**, after noticing a first v2 candidate improved average log-Mel but seriously hurt Chroma. Keep such conflicts visible instead of optimizing spectral profile blindly.
+- Timbre is **TimGM6mb SF2 GM acoustic steel guitar**, not a proven Avicii patch, with low bass and speculative pad after 12s. Effects are bounded smooth EQ estimated using the original's first ~3s broad log-Mel band contour, plus an **independently synthesized** diffuse stereo side tail. Real original processing chain remains unknown. The target stereo width was deliberately used as a fitting objective, not independently inferred.
+
+**Same-method v1 vs final v2 measurements** (mono per-frame Mel power 80 bands, compare mean log-Mel profile with global dB level offset, spectral-shape Pearson r; chroma_stft 12 bins n_fft4096 hop512 and per-frame cosine similarity):
+| Region / measurement | v1 | v2 | Target when applicable |
+| --- | ---: | ---: | ---: |
+| log-Mel spectral r, ~0.3–3.0s | 0.9384 | **0.9550** | — |
+| log-Mel profile RMSE dB, ~0.3–3.0s | 6.497 | **4.832** | — |
+| 12-bin Chroma mean cosine, ~0.2–3.0s | 0.8130 | **0.8301** | — |
+| log-Mel spectral r, 3.7–6.9s | 0.9270 | **0.9475** | — |
+| log-Mel profile RMSE dB, 3.7–6.9s | 6.829 | **5.390** | — |
+| 12-bin Chroma mean cosine, 3.6–6.9s | **0.8135** | 0.7932 | — |
+| stereo Side/Mid 0–3s | -16.25 dB | **-5.93 dB** | -5.88 dB |
+
+**Key limitations:** The second 3.7–6.9 s measurement interval was NOT used for the automated EQ profile estimation, but **WAS consulted** during manual MIDI/velocity refinements; it is **not a fully blind test**. A higher average spectrum correlation is NOT a perceptual similarity percentage or proof of equivalent timbre. Mono musical pitch similarity is imperfect outside the opening, even after improvement. Source reference is an unofficial MP3 of unverified session provenance. EQ and stereo were adjusted toward the target by design, not recovered producer settings. Significant transient fine structure and note-specific harmonics still differ from the target.
+
+**Next step:** A/B audition v2 vs v1 and target; prioritize true individual note/strum separation and sample-source identification rather than more average EQ. For 8–32s, map actual instrument and drum entry from full target/livestream; avoid arbitrary percussion. Improve stronger testing on fresh nonfit sections and record any user subjective observations.
