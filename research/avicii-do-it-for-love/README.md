@@ -170,3 +170,24 @@ Same 12-bin chroma_stft + DTW-cosine method as preceding analysis (22,050 Hz, ST
 - Scripts: `analyze_12m25.py`, `compare_music.py`, `live_repeated_section.py`, `plot_musical_alignment.py`; numeric results `12m25_features.json`, `chroma_matches.json`, `cross_livestream_alignment.json`.
 
 **NEXT ACTION:** Extend source timeline to **11:50–13:15** and compare repeated versions of the same sung passage; determine which local intervals are cleanest for reconstructing individual guitar sounds. Keep user's **priority** of reproducing the exact A opening 0–3s distinct: that particular passage remains unlocated in the livestream. Investigate both the 12-minute and 30-minute instances before declaring the original pluck absent. Continue limiting video exploration to the FIRST HOUR.
+
+
+---
+
+## 2026-11-15: started independent accompaniment reconstruction (v1, provisional)
+
+**Status:** Rendered a **32.5-second independent SF2 instrumental prototype** from the 3:36 target reference. It is NOT a final-faithful reconstruction. Local conversation package: `avicii_independent_rebuild_v1.zip`, containing full FLAC, separate Guitar/Bass/Atmosphere stems, MIDI, Python renderer, analysis JSON, spectrogram graph and 7-second A/B comparison. The ZIP is a ChatGPT conversation file; not automatically hosted in this repository.
+
+**Evidence-grounded initial decisions:**
+- Working tempo **100.33 BPM** (~1.196 seconds per main harmonic event), anchored to strong original intro transients ~1.24, 2.44, 3.65 s.
+- Low-frequency harmonic analysis of A over the first 32 seconds repeatedly indicates **E, C, B**, with some **D and G** transitions. These are *bass-root class evidence*, not verified full-chord labels or isolated bass guitar notes.
+- Initial chord hypothesis: Em7 / Cmaj7 / Bm7 / Em7, with D→G passing variation around ~7–10 s. Chord extensions, exact voicing and strum offsets are provisional, NOT a true polyphonic transcription.
+- Resynthesis uses free **TimGM6mb.sf2**, GM **steel acoustic guitar (program 25)**, electric bass (program 33) and extremely quiet pad (program 88) after ~12 seconds. MIDI notes are rendered independently; **no original recording samples used in the new mix/stems**.
+- Reverb/chorus settings are provisional explorations guided by repeated discussions of reverb and reversing guitar, NOT identified Avicii preset parameters. **The new prototype does not claim to use reverse guitar**.
+- Removed speculative dense EDM drums from the earliest 32 s. Previous 48s demo and FM simulations remain known poor comparators.
+
+**Initial test only, not success evidence:** Mean across-frequency *log-mel shape* correlation in ~0–3 s is **0.9349**, while the corresponding mean-profile log-mel RMSE is **15.04 dB**. High correlation reflects broad spectral contour and is NOT a psychoacoustic or precise timbral match; the frequency-band relative levels and transient dynamics clearly differ. The source/target may be unaligned by several tens of milliseconds. Independent intro L/R channel correlation ~0.955, wider original intro was measured ~0.590. This version needs further reverb/stereo-early/late separation and better sample/source matching.
+
+**Next systematic improvements:** (1) verify exact guitar voicings by sparse multi-pitch transcription of initial three note attacks, using tempered harmonic candidate pursuit + B remake alignment; (2) characterize original early attack vs late 1s decay and fit stereo impulse response from target, avoiding copying full target audio; (3) select/browse recorded vintage guitar soundfont/preset candidates, not only TimGM6mb; (4) reconstruct actual percussion/synth/bass entry times by onset-energy + harmonic/percussive stem separation, not prefill genre beats; (5) compare withheld attacks & 28–32s with saved reference and produce revised stems.
+
+**Handoff warning:** The 32.5s ZIP includes a 7s A/B WAV that incorporates user-supplied target audio *for listening comparison only*. The separately rendered mix/stems **do not** contain copied source audio. Keep source files in personal research rather than public redistribution. Future sessions should retrieve the ZIP from conversation files or request its reattachment if no longer mounted.
