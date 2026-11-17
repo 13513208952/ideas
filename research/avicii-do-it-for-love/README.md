@@ -338,3 +338,48 @@ Bandpass 1.8–8kHz, 10ms RMS hop at 22.05 kHz, gaussian smoothing and peak dete
 - Three controlled tests with same phrase/MIDI: (1) electric guitar DI + bright-clean amplifier/cabinet; (2) same plus mild dynamic coloration/compression/saturation; (3) same plus two subtle phase/delay-spread layers (and separately an optional tremolo control). Crucial: keep time-varying envelope of the first 1s as a separate fitted target; distinguish amp coloration from modulation.
 - Try audio audition in normal speed and pitch-preserving 1/20x, but beware time-stretch artifacts.
 - User's phrase: similar **“base electronic timbre”**, not similar volume tremolo. Key subjective target: **bright, crisp, transparent, magnetic, internally trembling, one evolving sonic gesture**.
+
+
+---
+
+## 2026-11-17: V4 "magnetic" core timbre study — electric-guitar signal chain and delayed harmonic bloom
+
+**Direction from user:** The intro in target A has a *bright, crisp, magnetic, tide-like evolving vintage electronic core sound*. The Smiths' `How Soon Is Now?` intro is user-confirmed very similar in **fundamental timbre**, while **its amplitude tremolo is NOT the common feature**; target A is brighter. Do NOT assume target has tremolo, and do not declare the Smiths equipment to be the Avicii signal chain.
+
+**Firsthand contextual source:** Smiths producer John Porter corrected the production history: original recorded guitar via Roland Jazz Chorus and DI, later multiple Fender Twins, Drawmer gate and various AMS delay processing. Producer and Marr differ in recollections. See https://www.guitarworld.com/features/the-smiths-how-soon-is-now-guitar-secrets-producer-john-porter-reveals-the-exhaustive-tonal-sculpting-behind-the-alt-rock-anthem and https://www.guitarworld.com/features/the-secrets-behind-johnny-marrs-tone-on-the-smiths-how-soon-is-now . These explain why **source / amplifier tonal coloration should be tested independently of tremolo**.
+
+**Independently generated V4 listening lab:** [Google Drive folder](https://drive.google.com/drive/folders/1MU1JHpmQ0-SiZGUNR3eIlnQZ8ENnhq9d), complete editable/script package `magnetic_timbre_v4_experiments.zip`: https://drive.google.com/file/d/1TWG4kK9e4jhN9tmn43MRTH-0_uLsj-Lh/view (9.60 MB). Includes source `build_magnetic_tests.py`, `extend_harmonic_exciter.py`, `late_harmonic_bloom.py`, README, FLACs, charts, metrics JSON. Target audio only in private A/B file, not inserted into independent reconstructions. Source samples remain **TimGM6mb SF2** (program 25 steel acoustic, 26 electric jazz, 27 clean electric, 29 overdriven electric). Amp is a simplified filtered/soft-saturation model, *NOT a faithful Roland JC-120 or Fender Twin emulation*. First 4s use unverified simultaneous-note pitch hypotheses; they intentionally do NOT claim individual strings/notes transcribed.
+
+**Three audition galleries in user's Drive**:
+1. [Seven timbre-source tests, 7×4s + separators](https://drive.google.com/file/d/1OKkJCL-zzzr9r0vZJXUNAur-NzTk6EaF/view): acoustic control; clean electric DI; clean electric + pseudo-bright-amp; amp + dynamic band movement; jazz electric alternative; overdrive guitar alternative; subtle stereo micro-delay on electric + dynamic movement.
+2. [Brightness experiments, 4×4s](https://drive.google.com/file/d/14ls2h5QFsdF7Q3r9yk8sTZTGb-Yc4mdV/view): electric amp+motion baseline; treble shelf; midband-derived harmonic exciter; combined shelf/exciter. This illustrates that EQ boosting alone can fail to create missing harmonics.
+3. [Delayed harmonic bloom, 4×4s](https://drive.google.com/file/d/1T0zk43ATVTQAN5gJUsOciE-HnKwVQmZO/view): electric amp+motion baseline; fitted later high-harmonic generation; reduced-level version; no-early-subtraction version.
+- [PRIVATE A/B target 4s versus generated variants 3,4,7](https://drive.google.com/file/d/1VQ2b88f-j3eLgtnHV-df44TgoAQxvtDR/view). Research comparison, NOT for public distribution.
+
+### Measured first-second spectral feature and fitted test
+
+Using 6–10 kHz / 700–1600 Hz band RMS relative ratio over **0.22–0.78s** (note: frequency ratio is NOT a psychoacoustic timbre similarity percentage):
+| Source | Ratio dB | Error compared to target |
+| --- | ---: | ---: |
+| Target A original | **−23.88** | — |
+| SF2 GM acoustic steel control | −31.63 | −7.75 |
+| SF2 clean electric DI | −29.33 | −5.45 |
+| SF2 clean electric plus amp approximation | −28.71 | −4.82 |
+| SF2 electric+amp+fitted spectral motion | −27.50 | −3.62 |
+| GM jazz electric+amp+motion | −40.63 | −16.75 |
+| GM overdrive+amp+motion | −30.83 | −6.95 |
+| Midband-derived harmonic exciter over electric+amp+motion | **−25.45** | **−1.57** |
+
+**But the bigger discrepancy is temporal, not mean spectrum:** 6–10 kHz smooth RMS is strongest at **0.410s** in the ORIGINAL, but the clean electric + amp + slow-band fit sample peaks **0.166s**, close to its synthesized attack. This is the key reason treble shelving does not create the wanted internally evolving/tide-like sound.
+
+To test *one coherent gesture with electronic timbral evolution and NO extra MIDI attacks*, derive novel high harmonics by applying nonlinear shaping to the **existing 1.5–3.8 kHz partials**, high-pass at ~4.3 kHz, and gate the generated harmonics with a smooth bell centered ~250ms after each initial chord onset; also reduce premature HF attack in the rendered synthetic instrument. One deliberately TARGET-FITTED candidate has:
+- original 6–10 kHz peak **0.410s** versus synthesized **0.403s**
+- original 6–10k / 0.7–1.6k ratio **−15.00 dB** over 0.37–0.46s, synthesized **−14.91dB**.
+These numbers were explicitly used to fit the model on that interval, so matching them is **NOT independent proof** that Avicii used an exciter or that listeners hear the same timbre. Alternate lower-gain candidate keeps the original electric patch transient as the main high-band peak (0.166s); this demonstrates tuning sensitivity. New high harmonics and timbral dynamics are the research direction, not an identified plugin. Note-source and 4s voicing estimates remain unverified.
+
+**Code plots:**
+- `first_second_motion_comparison.png` and `first_second_candidate_spectrograms.png` show original vs source/amp vs matched dynamic spectral motion.
+- `late_harmonic_bloom_envelopes.png`: original / clean electric baseline / fitted delayed exciter / understated alternative. https://drive.google.com/file/d/1UeocRlnONkWvWJW509TuzaQPNTCL3zAX/view
+- No copied original source in synthetic stems. All source-informed fitting, NOT model hearing or blind tests.
+
+**What NOT to conclude:** Source timbre still sounds unverified by an actual music-understanding model or user's new audition; GS electric patches may all be inadequate. Measuring matching amplitude envelope or overall brightness does not establish partial structure, time-dependent phase, formant, picking mechanics, or stereo source equivalence. Continued work should directly audition palette/gallery in normal speed and Audition preserved-pitch slow mode, and if similar proceed to more realistic clean DI source / amp/cab simulation and time-varying narrow-band spectral modulation. Keep first second as a coherent sonic event, with exact pitch plurality unresolved.
