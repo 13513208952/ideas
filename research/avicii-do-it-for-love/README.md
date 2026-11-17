@@ -321,3 +321,20 @@ Bandpass 1.8–8kHz, 10ms RMS hop at 22.05 kHz, gaussian smoothing and peak dete
 - Important terminological distinction: a single auditory “syllable” / sonic gesture can contain multiple harmonic partials and/or layers; it does not establish one fundamental note or one acoustic source. Similarly, multiple amplitude peaks do not automatically imply multiple MIDI notes.
 
 **Avoid** optimizing only average log-Mel profile or filling 1 s with three independently audible guitar string plucks. Before adding FX, fit time evolution. Preserve the user's detailed hearing observation as a hypothesis and independently test it.
+
+
+---
+
+## 2026-11-17 — user ear-matched core timbre to The Smiths "How Soon Is Now?" (high priority)
+
+**Decisive user listening feedback:** Among several historical DSP examples, **The Smiths — "How Soon Is Now?" (intro guitar, ~0:00–0:25)** is strikingly **similar in underlying electric/magnetic timbre** to A's first-second gesture. Avicii target is notably **brighter**. Similarity is explicitly **NOT the periodic volume swelling** (tremolo), which user does *not* regard as the common trait. Do not misread this as "Avicii must use a tremolo pedal."
+
+**Relevant source-based provenance on Smiths sound, NOT Avicii equipment proof:**
+- Johnny Marr interview (2013): initially dry rhythm guitar track on tape sent to four Fender Twin Reverb amps; Marr and producer manually varied the amps' tremolo, two panned per side. https://www.westword.com/music/johnny-marr-on-how-he-created-the-sound-for-how-soon-is-now-without-effects-pedals-5704969/
+- Producer John Porter firsthand corrected production history (2020), especially https://www.guitarworld.com/features/the-smiths-how-soon-is-now-guitar-secrets-producer-john-porter-reveals-the-exhaustive-tonal-sculpting-behind-the-alt-rock-anthem : guitar initially **Roland Jazz Chorus + DI**, later re-amped through 3 or 4 Twin amps; **Drawmer noise gate triggered by LinnDrum cowbell**, plus multiple AMS delays hard-panned in the final mix; slow Leslie on B sections; producer and guitarist differ on several details. Original article https://www.guitarworld.com/features/the-secrets-behind-johnny-marrs-tone-on-the-smiths-how-soon-is-now includes Porter's direct corrections. Initial source plus amp/mic re-recording and layering matter—not only a tremolo oscillator.
+- Source's slide guitar harmonizer chain is **different** from the intro's rhythm-guitar chain. Do not mix these as if one effects chain.
+
+**Working inference (NOT verified Avicii chain):** User's timbre similarity strongly suggests trying **electric guitar/pickup-like excitation -> moderately clean amp/cabinet/tone shaping -> modest nonlinear harmonic coloration -> optional multi-mic/phase-slightly-varied layers** with **NO tremolo in reference baseline**. Compare with SF2 acoustic-steel baseline, which is likely mismatched at the *source class* level. Since user hears target brighter, fit the time-varying high-band transients and resonances of A, not uniform treble boost.
+- Three controlled tests with same phrase/MIDI: (1) electric guitar DI + bright-clean amplifier/cabinet; (2) same plus mild dynamic coloration/compression/saturation; (3) same plus two subtle phase/delay-spread layers (and separately an optional tremolo control). Crucial: keep time-varying envelope of the first 1s as a separate fitted target; distinguish amp coloration from modulation.
+- Try audio audition in normal speed and pitch-preserving 1/20x, but beware time-stretch artifacts.
+- User's phrase: similar **“base electronic timbre”**, not similar volume tremolo. Key subjective target: **bright, crisp, transparent, magnetic, internally trembling, one evolving sonic gesture**.
