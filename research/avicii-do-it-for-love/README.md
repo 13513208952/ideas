@@ -246,3 +246,59 @@ The user requested continued independent reconstruction, not further searching f
 **New model-ready AB asset uploaded to user's own Drive:**
 https://drive.google.com/file/d/1bXGyezYEWADpe5zs0IcKKep46irm5MUc/view 
 Title: `Avicii_Original_vs_v2_intro_8s_AB.flac` (2.28 MB, 17s stereo FLAC, 44.1 kHz). Content: **0–8 seconds target original**, 8–9 seconds silence, **9–17 seconds independent v2**. RMS-matched by reducing v2 gain by ~3.38 dB, without dynamic compression; 20 ms boundary fades to avoid switching artifacts. Good for asking music-understanding models to compare *note separation, attack brightness, short decay, reverb softness, mechanical string timbre* and output a prioritized error diagnosis; not for stereo analysis if the model folds to mono. Upload this to official Music Flamingo demo via its UI; no demo invocation has been performed in current ChatGPT runtime.
+
+
+---
+
+## 2026-11-17: livestream-inspired v3 FX experiments, **not yet faithful master**
+
+**User direction:** stop hunting for the original guitar recording, keep rebuilding; test **actual production ideas mentioned in the 2016 livestream**, while preserving their crucial listening feedback: target guitar sounds *crisp, bright, energetic, dry*, v2 sounds *soft, wistful and individual notes become blended*.
+
+**Directly reopened actual full Swedish auto-caption SRT** from uploaded source, rather than relying only on earlier summaries:
+- **06:16–06:18:** “sätter vi en liten reverb på den” (a little reverb), then **06:47–06:50:** “riktigt episk reverb”; sound target may be vocal/another component, NOT independently identified as intro guitar.
+- **10:41–10:43:** question “Vill du ha reverb?” affirmative. Also may concern vocal performance.
+- **30:14–30:22:** proposal “Typ dist-distar och reverb och allt sådär”, distortion/reverb etc; not proof any particular sound in eventual master was actually treated this way.
+- **33:29–33:46:** “i pre-en att reversa en gitarr”, record/play a chord for prechorus, reverse and fade in, keeping a silence/contrast before chorus. This is the most specifically relevant guitar-processing suggestion. It suggests **reverse CHORD audio before chorus**, not reversing the intro guitar for the whole song, nor necessarily a reverse reverb. Captions are automatic; exact nuances are uncertain.
+
+### Actual independently rendered experiments
+
+**Final corrected research package** (user's own Google Drive, ZIP ~30 MB):
+https://drive.google.com/file/d/1vh6SiZBt4xOBNJI4xTQyitdyJKVrX4UV/view
+
+**Listening gallery (~40s)**: https://drive.google.com/file/d/16PMvsD1Prc1pJ8zYCgEl9OYCBus8DR6o/view
+Sequences within: **0–8s dry**; **8.75–16.75s short room (380ms)**; **17.5–25.5s soft saturation + short room**; **26.25–34.25s deliberately exaggerated long reverb (2.35s) as negative control**; **35–40s reverse guitar chord swell before a new attack**. Last demo contains music from 8–13s of separate example and is at **arbitrary illustrative location, not the actual documented prechorus placement**.
+
+**Pitch-corrected ~32.5s working candidate**: https://drive.google.com/file/d/19kRBzZHZjkhBPxKROU3-pPJWGK5N66vL/view . Candidate is short-room dry-biased separate guitar with quiet prior independently synthesized bass, NO pad and NO reversal in intro. Musical arrangement after ~8s remains highly speculative.
+
+**Private target / v2 / v3 first-8s A/B WAV:** https://drive.google.com/file/d/1URJMijgK1PU0AZxdEs8vL1Diz92uflGz/view
+
+Contents of ZIP include individually rendered FLACs for all five effects, stereo guitar, v3 candidate, MIDI, source generators `build_experiments.py`, `add_chroma_guard.py`, `pitch_probe.py` (if bundled; verify), `package_results.py`, notes, full objective graph, comparison files. Original target audio is present **only as 8s private A/B** and is never inserted in the independently generated stems. The SF2 remains **TimGM6mb GM Steel Guitar program 25**; its real authenticity is UNVERIFIED and may be the main timbre mismatch. No assumption that Avicii used the effects.
+
+### First-principles onset decomposition
+
+Bandpass 1.8–8kHz, 10ms RMS hop at 22.05 kHz, gaussian smoothing and peak detection:
+- Target has clear sets **1.317, 1.427, 1.606**; **2.514, 2.634, 2.804**; **3.712, 3.831, 4.011** sec (plus a smaller 4.111s event).
+- V2 gives approximately **1.217, 1.517**; **2.434, 2.714**; **3.662, 3.931** sec, i.e. premature and broader two-stage attacks.
+- v3 places *independent individual note-ons* at approximately 0, 112ms and 294ms relative to a harmonic group. After synthesis, output peaks include **1.317, 1.417, 1.616**, **2.504, 2.804** (some missing high-band peaks), **3.702, 3.811, 4.001**. The closer onset match is **FITTED directly to the target's detected peaks**, so it validates implemented timing not independently proven transcription.
+- V2 grouped ~6 notes at two close timestamps, leading to masking; v3 tries only 3 separate notes without the massive upper-chord clusters. If underlying recording actually layers multiple instruments, v3 may still be missing voices.
+
+**Crude high-band energy tail-to-attack ratio within target group ~1.3–2.3sec**, not a pure instrument/reverb measurement:
+- target **−11.04dB**
+- v2 **−7.00dB** (excessive sustained energy)
+- v3 dry **−12.71dB**
+- v3 380ms short room **−12.45dB**
+- v3 saturation + short room **−10.71dB**
+- v3 large 2.35s reverb **−7.87dB** (roughly v2-style smear; serves as negative control).
+
+**Voicing experiment** (source-informed, not proved): Original direct target chroma for C chord group features C/G/B; original v3 guessed **C–G–C**, causing missing B. Replacing with **C–G–B** improves agreement. Similarly the next B-group was **B–F#–B**, whereas the target has strong F#/A/D classes; changing candidate to **B–F#–D** improves agreement. A quick candidate grid tried alternative triads against *target windows*, not a blind evaluation. Exact octaves and harmonic-vs-note ambiguity still need study.
+
+**Same-method pitch-class/chroma cosine, time-aligned, first 7s:**
+- target vs **v2**: **0.830** over 0.3–3.0s, **0.808** over 3.7–6.9s.
+- target vs **early v3 with erroneous voicing**: about **0.703**, **0.686**.
+- target vs **pitch-corrected main v3 (short room + quiet independent bass)**: **0.811**, **0.780**. => Nearer than naive v3 but still BELOW v2, even though onset temporal structure is more faithful.
+- a proposed added upper-layer v3 scored ~**0.771**, **0.704**, so was not chosen. This is important negative evidence against simply reintroducing 6-note clusters.
+- Audio comparison and metrics are still restricted to a **reference-influenced** tuning region; no blind holdout. Timbral authenticity remains unresolved.
+
+**Interpretation:** This iteration is an honest **controlled FX and articulation research kit**, not a v3 final master. The new short-room version is an *onset/decay candidate*. Distortion may help brightness but it reduces some distinct onset peaks; exaggerated long reverb blurs articulation and is not recommended for the opening. Reverse chord sounds structurally appropriate as a separate prechorus demo, but its real use in final target is NOT proven. Preserve all note/processing options independently editable.
+
+**Next work:** audition the effect gallery; ask user which segment helps the sought crispness (but do not demand immediate feedback to proceed). Locate timbral source better (sample/plucked transient material), reconstruct actual multi-pitch note attacks and separate overlapping instrument layers. Limit claims about original production chain to observed captions, keep comparing to target and to fan remake, with explicit stereo limitations.
